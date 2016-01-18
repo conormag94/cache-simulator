@@ -1,15 +1,10 @@
-from tabulate import tabulate
-
 class Cache(object):
-
+    
     def __init__(self, l, k, n):
         self.l = l
         self.k = k
         self.n = n
         self.cache_array = [['Empty']*k for x in range(n)]
-        self.bits = [[0]*(k-1) for x in range(n)]
-        #print(tabulate(self.cache_array))
-        #print(tabulate(self.bits))
 
     def calculate_hits(self, address_list):
         hits = 0
@@ -73,12 +68,15 @@ def main():
     q1 = Cache(16, 1, 8)
     print("\nQ1(i): L=16, K=1, N=8")
     q1.calculate_hits(addresses)
+
     q2 = Cache(16, 2, 4)
     print("\nQ1(ii): L=16, K=2, N=4")
     q2.calculate_hits(addresses)
+
     q3 = Cache(16, 4, 2)
     print("\nQ1(iii): L=16, K=4, N=2")
     q3.calculate_hits(addresses)
+
     q4 = Cache(16, 8, 1)
     print("\nQ1(iv): L=16, K=8, N=1")
     q4.calculate_hits(addresses)
