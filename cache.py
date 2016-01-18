@@ -20,10 +20,12 @@ class Cache(object):
             set_num = int(address[2], 16) % self.n
             tag = address[:3]
 
+            # If there is a hit, make the current tag the most recent
             if tag in self.cache_array[set_num]:
                 result = "Hit"
                 hits += 1
                 self.lru_update(set_num, tag)
+            # If there is a Miss, insert current tag and adjust LRU
             else:
                 result = "Miss"
                 misses += 1
@@ -33,6 +35,7 @@ class Cache(object):
 
         print('Hits:', hits, 'Misses:', misses)
 
+    # Adjusts the LRU in the set if there was a hit
     def lru_update(self, set_num, tag):
         if 'Empty' not in self.cache_array[set_num]:
             idx = self.cache_array[set_num].index(tag)
@@ -43,16 +46,20 @@ class Cache(object):
                 idx += 1
             self.cache_array[set_num][-1] = temp_tag
 
+    # Inserts line and adjusts LRU. Leftmost element in cache_array is the LRU
     def insert_line(self, set_num, tag):
+        # If direct-mapped, just insert into the set
         if self.k == 1:
             self.cache_array[set_num][0] = tag
         else:
+            # If set is full, insert tag at the end of the array and shift all
+            # elements to the left, getting rid of very left element
             if 'Empty' not in self.cache_array[set_num]:
-
                 for i in range(self.k-1):
                     temp = self.cache_array[set_num][i+1]
                     self.cache_array[set_num][i] = temp
                 self.cache_array[set_num][self.k-1] = tag
+            # Insert at first empty space
             else:
                 idx = self.cache_array[set_num].index('Empty')
                 self.cache_array[set_num][idx] = tag
